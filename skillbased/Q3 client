@@ -1,0 +1,12 @@
+import socket
+
+def main():
+    """Main function to run the client"""
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect(('192.168.198.132', 8888))
+    quote = client_socket.recv(1024)
+    print("Received quote: ", quote.decode())
+    client_socket.close()
+
+if __name__ == '__main__':
+    main()
