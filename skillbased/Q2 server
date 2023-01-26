@@ -1,0 +1,19 @@
+import socket
+
+def main():
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind(('0.0.0.0', 1234))
+    server_socket.listen(5)
+    print("Temperature conversion server running on port 1234...")
+    while True:
+        client_socket, client_address = server_socket.accept()
+        print("Received connection from: ", client_address)
+        fahrenheit = client_socket.recv(1024)
+        celsius = (float(fahrenheit) - 32) * (5/9)
+        celsius = round(celsius, 2)
+        celsius = str(celsius)
+        client_socket.send(celsius.encode())
+        client_socket.close()
+
+if __name__ == '__main__':
+    main()
