@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <string.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+int main() {
+    int client_socket;
+    struct sockaddr_in server_address;
+    int port = 1234;
+    int random_number;
+
+    // Create a socket and check for errors
+    if ((client_socket = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+        printf("Error creating socket\n");
+        return 1;
+    }
+
+    // Set server address
+    memset(&server_address, 0, sizeof(server_address));
+    server_address.sin_family = AF_INET;
+    server_address.sin_addr.s_addr = inet_addr("192.168.172.128");
+    server_address.sin_port = htons(port);
+
+    // Connect to the server
+    if (connect(client_socket, (struct sockaddr *)&server_address, sizeof(server_address)) < 0
+    {
+        printf("Error connecting to server\n");
+        return 1;
+    }
+
+    // Receive the random number from the server
+    recv(client_socket, &random_number, sizeof(random_number), 0);
+
+    // Print the received random number
+    printf("Received random number: %d\n", random_number);
+
+    // Close the socket
+    close(client_socket);
+
+    return 0;
+}
